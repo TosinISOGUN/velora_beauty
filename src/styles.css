@@ -1,0 +1,1040 @@
+@import "tailwindcss";
+
+/* Self-hosted type: Gambetta (display, with italic; Fontshare free licence) and Manrope (interface; SIL OFL), both variable fonts. */
+@font-face {
+  font-family: "Gambetta";
+  src: url("/fonts/gambetta-var.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gambetta";
+  src: url("/fonts/gambetta-italic-var.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-var.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+  VELORA palette: Midnight Cobalt and Apricot. A cool ink-navy ground, a single apricot accent
+  (the colour of a lip liner pencil in daylight), and no brown or beige anywhere. All the warmth and
+  colour comes from the photography: emerald, lilac, teal and rose. Dark by default with a chalk-blue
+  light theme behind a toggle. The inline script in <head> sets data-theme before first paint;
+  with no script the page is dark.
+*/
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a1020;
+  --bg-2: #0e1629;
+  --surface: #141d34;
+  --panel: #1b2644;
+  --on-panel: #f4f6fb;
+  --fg: #f4f6fb;
+  --muted: #a9b5cf;
+  --line: rgb(244 246 251 / 0.16);
+  --accent: #ff7a59;
+  --accent-deep: #ff9272;
+  --on-accent: #0a1020;
+  --accent-text: #ff8f70;
+  --peach: #ffd3bd;
+  --petal: #c4b5fd;
+  --s-lips: #1c1d3d;
+  --s-cheeks: #2a1b36;
+  --s-complexion: #10293a;
+  --s-set: #1f2850;
+  --shadow: 0 30px 60px -30px rgb(0 0 0 / 0.8);
+  --nav-h: 64px;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --bg-2: #e8edf6;
+  --surface: #ffffff;
+  --panel: #0a1020;
+  --on-panel: #f4f6fb;
+  --fg: #0a1020;
+  --muted: #475270;
+  --line: rgb(10 16 32 / 0.16);
+  --accent: #d9441e;
+  --accent-deep: #b8360f;
+  --on-accent: #ffffff;
+  --accent-text: #c23a14;
+  --peach: #ffd3bd;
+  --petal: #6d4fe0;
+  --s-lips: #e3e0f8;
+  --s-cheeks: #fadcd2;
+  --s-complexion: #d6ebef;
+  --s-set: #dfe4f5;
+  --shadow: 0 26px 50px -30px rgb(10 16 32 / 0.45);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-on-panel: var(--on-panel);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-on-accent: var(--on-accent);
+  --color-accent-text: var(--accent-text);
+  --color-peach: var(--peach);
+  --color-petal: var(--petal);
+  --color-s-lips: var(--s-lips);
+  --color-s-cheeks: var(--s-cheeks);
+  --color-s-complexion: var(--s-complexion);
+  --color-s-set: var(--s-set);
+  --font-display: "Gambetta", "Playfair Display", Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 20px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  dialog {
+    color: var(--fg);
+  }
+}
+
+/* A header sitting on a hero photograph (the photographs are always dark) uses light type in both themes. */
+body:has(main [data-hero]) header[data-top] {
+  --fg: #f4f6fb;
+  --bg: #0a1020;
+  --line: rgb(244 246 251 / 0.22);
+  --accent-text: #ff8f70;
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: clamp(16px, 4vw, 48px);
+  }
+  .section {
+    padding-block: clamp(64px, 9vw, 128px);
+  }
+
+  /* Display type. Italic emphasis stays in the same family. */
+  .display-2xl {
+    font-size: clamp(3rem, 7vw, 6.2rem);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+  /* The hero headline: large enough to read as a poster, short enough to stay on two lines. */
+  .display-hero {
+    font-size: clamp(2.9rem, 6.2vw, 6.6rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    text-shadow: 0 2px 40px rgb(4 8 18 / 0.35);
+  }
+  .display-xl {
+    font-size: clamp(2.5rem, 6.4vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+  .display-lg {
+    font-size: clamp(2rem, 4.4vw, 3.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+  }
+  .display-md {
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    line-height: 1.1;
+  }
+  h1 em,
+  h2 em,
+  h3 em,
+  .display em {
+    font-style: italic;
+    font-weight: 400;
+    padding-right: 0.06em;
+    color: var(--accent-text);
+  }
+  .lead {
+    font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+    color: var(--muted);
+    max-width: 56ch;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+  /* Small-caps serif, as in the campaign line: DEFINE YOUR SHADE. */
+  .caps-serif {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+  .prose-flow > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-flow {
+    max-width: 62ch;
+    color: var(--muted);
+  }
+  .link-inline {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-text);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  /*
+    Shape rule: every control (buttons, inputs, chips, icon buttons) is a pill; every surface and
+    photograph is 20px; the arch is reserved for campaign portraits.
+  */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 48px;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition:
+      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.2s,
+      border-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active {
+    transform: translateY(1px) scale(0.985);
+  }
+  .btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px -14px color-mix(in oklab, var(--accent) 80%, transparent);
+  }
+  .btn-solid {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .btn-solid:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+  }
+  .btn-ghost {
+    border-color: color-mix(in oklab, var(--fg) 55%, transparent);
+    color: var(--fg);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  /* A light button for use on accent or photographic grounds in either theme. */
+  .btn-on-dark {
+    background: #f4f6fb;
+    color: #0a1020;
+  }
+  .btn-on-dark:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+  }
+  .btn-text {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--accent-text);
+  }
+  .btn-text:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .btn-text svg {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn-text:hover svg {
+    transform: translateX(4px);
+  }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: var(--fg);
+    background: transparent;
+    border: 0;
+    position: relative;
+    transition: background-color 0.2s;
+  }
+  .icon-btn:hover {
+    background: color-mix(in oklab, var(--fg) 10%, transparent);
+  }
+
+  /*
+    Glass. CSS has no native glass, so this is an approximation: a translucent tint, backdrop blur
+    and saturation, a hairline edge and a faint inner highlight. .glass is always dark-tinted with
+    white type, for plates that sit on photographs in either theme; .glass-surface follows the
+    theme, for bars and panels that sit on the page. Both fall back to solid fills where blur is
+    unsupported or the person asks for reduced transparency.
+  */
+  .glass {
+    background: color-mix(in oklab, #0a1020 36%, transparent);
+    border: 1px solid rgb(255 255 255 / 0.22);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.28),
+      0 18px 40px -22px rgb(0 0 0 / 0.6);
+    color: #fff;
+  }
+  .glass-surface {
+    background: color-mix(in oklab, var(--bg) 66%, transparent);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(22px) saturate(1.5);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    box-shadow: inset 0 1px 0 color-mix(in oklab, var(--fg) 12%, transparent);
+  }
+  .btn-glass {
+    background: color-mix(in oklab, #fff 14%, transparent);
+    border-color: rgb(255 255 255 / 0.38);
+    color: #fff;
+    backdrop-filter: blur(14px) saturate(1.5);
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3);
+  }
+  .btn-glass:hover {
+    background: color-mix(in oklab, #fff 26%, transparent);
+    transform: translateY(-2px);
+  }
+  /* Without blur (an unsupported browser, or the OS asks for reduced transparency) the plates stay see-through: only the blur goes, and the tint deepens a little so type stays readable. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass {
+      background: color-mix(in oklab, #0a1020 44%, transparent);
+    }
+    .glass-surface {
+      background: color-mix(in oklab, var(--bg) 82%, transparent);
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .glass-surface,
+    .btn-glass,
+    dialog.sheet {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .glass {
+      background: color-mix(in oklab, #0a1020 44%, transparent);
+    }
+    .glass-surface,
+    dialog.sheet {
+      background: color-mix(in oklab, var(--bg) 82%, transparent);
+    }
+  }
+
+  /* Category panels: stacked on phones, a row on desktop where the pointed-at panel opens up. */
+  .panels {
+    display: grid;
+    gap: 12px;
+  }
+  .panels > li {
+    min-height: 26rem;
+  }
+  @media (min-width: 1024px) {
+    .panels {
+      display: flex;
+      height: 38rem;
+    }
+    .panels > li {
+      flex: 1 1 0;
+      min-height: 0;
+      transition: flex-grow 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .panels > li:hover,
+    .panels > li:focus-within {
+      flex-grow: 2.4;
+    }
+  }
+
+  /* Slow horizontal drift of shade names. Static and wrapped-off-screen with reduced motion. */
+  .ticker {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: tick 90s linear infinite;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes tick {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+  }
+  .media {
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+  /* The signature campaign shape. */
+  .arch {
+    border-radius: 999px 999px var(--radius-card) var(--radius-card);
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+
+  /* Product tile ground: category colour with a soft glow in the product's own shade. */
+  .glow-tile {
+    background:
+      radial-gradient(
+        ellipse 60% 48% at 50% 58%,
+        color-mix(in oklab, var(--glow, #b83248) 42%, transparent),
+        transparent 72%
+      ),
+      var(--tile, var(--s-lips));
+  }
+  :root[data-theme="light"] .glow-tile {
+    background:
+      radial-gradient(
+        ellipse 55% 42% at 50% 60%,
+        color-mix(in oklab, var(--glow, #b83248) 20%, transparent),
+        transparent 72%
+      ),
+      var(--tile, var(--s-lips));
+  }
+
+  /* Choice chips: filters and shade selectors. Selected state is never colour alone. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1.1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .chip:hover {
+    border-color: var(--fg);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  /* Shade options: a native radio inside a label, so keyboards and screen readers work. */
+  .shade {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 56px;
+    padding: 0.55rem 0.9rem 0.55rem 0.6rem;
+    border-radius: var(--radius-card);
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .shade:hover {
+    border-color: var(--fg);
+  }
+  .shade input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .shade:has(input:checked) {
+    border-color: var(--fg);
+    box-shadow: inset 0 0 0 1.5px var(--fg);
+  }
+  .shade:has(input:focus-visible) {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 3px;
+  }
+  .shade-swatch {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    display: grid;
+    place-items: center;
+    color: #fff;
+  }
+  .shade-check {
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+    filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.7));
+  }
+  .shade:has(input:checked) .shade-check {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Forms */
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    padding: 0.75rem 1.2rem;
+    background: var(--surface);
+    color: var(--fg);
+    border: 1.5px solid color-mix(in oklab, var(--fg) 45%, transparent);
+    border-radius: 999px;
+    transition: border-color 0.2s;
+  }
+  .field::placeholder {
+    color: var(--muted);
+    opacity: 0.8;
+  }
+  textarea.field {
+    border-radius: var(--radius-card);
+    min-height: 140px;
+    padding-top: 0.9rem;
+  }
+  select.field {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--fg) 50%),
+      linear-gradient(135deg, var(--fg) 50%, transparent 50%);
+    background-position:
+      calc(100% - 22px) 50%,
+      calc(100% - 16px) 50%;
+    background-size:
+      6px 6px,
+      6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.6rem;
+  }
+  .field:hover {
+    border-color: var(--fg);
+  }
+  .field:focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 2px;
+    border-color: var(--accent-text);
+  }
+  .field[aria-invalid="true"] {
+    border-color: #ff8fa0;
+  }
+  :root[data-theme="light"] .field[aria-invalid="true"] {
+    border-color: #a31d2e;
+  }
+  .field-error {
+    color: #ff9aa9;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+    padding-left: 0.4rem;
+  }
+  :root[data-theme="light"] .field-error {
+    color: #a31d2e;
+  }
+
+  /* Native <details> accordion */
+  .faq details {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 64px;
+    padding-block: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--fg);
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq .faq-icon {
+    flex: none;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .faq details[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  .faq .faq-body {
+    padding-bottom: 1.4rem;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+  .faq details[open] .faq-body {
+    animation: faq-in 0.3s ease both;
+  }
+  @keyframes faq-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Dialogs: bag drawer, mobile menu, filter sheet, search and lightbox share one base. */
+  dialog.sheet {
+    border: 1px solid var(--line);
+    padding: 0;
+    background: color-mix(in oklab, var(--bg) 74%, transparent);
+    backdrop-filter: blur(28px) saturate(1.5);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    color: var(--fg);
+    max-width: none;
+    max-height: none;
+    overscroll-behavior: contain;
+  }
+  dialog.sheet::backdrop {
+    background: rgb(4 8 18 / 0.5);
+    backdrop-filter: blur(6px);
+  }
+  dialog.sheet-right {
+    margin: 0 0 0 auto;
+    width: min(100vw, 440px);
+    height: 100dvh;
+    box-shadow: -30px 0 60px -30px rgb(0 0 0 / 0.6);
+  }
+  dialog.sheet-left {
+    margin: 0 auto 0 0;
+    width: min(100vw, 400px);
+    height: 100dvh;
+  }
+  dialog.sheet-bottom {
+    margin: auto 0 0;
+    width: 100vw;
+    max-height: 88dvh;
+    border-radius: 24px 24px 0 0;
+  }
+  dialog.sheet-top {
+    margin: 0 auto auto;
+    width: min(100vw, 720px);
+    max-height: 90dvh;
+    border-radius: 0 0 24px 24px;
+  }
+  dialog.sheet-full {
+    margin: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgb(4 8 18 / 0.95);
+    color: #fff;
+  }
+  dialog.sheet[open] {
+    animation: sheet-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  dialog.sheet-left[open] {
+    animation-name: sheet-in-left;
+  }
+  dialog.sheet-bottom[open] {
+    animation-name: sheet-in-bottom;
+  }
+  dialog.sheet-top[open] {
+    animation-name: sheet-in-top;
+  }
+  dialog.sheet-full[open] {
+    animation-name: fade-in;
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateX(40px);
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-in-left {
+    from {
+      transform: translateX(-40px);
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-in-bottom {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-in-top {
+    from {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Gallery: swipeable on touch through scroll snapping. */
+  .snap-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .snap-row::-webkit-scrollbar {
+    display: none;
+  }
+  .snap-row > * {
+    scroll-snap-align: center;
+    flex: none;
+  }
+
+  /* Theme toggle icons: the moon shows in noir, the sun in porcelain. */
+  .theme-sun {
+    display: none;
+  }
+  :root[data-theme="light"] .theme-moon {
+    display: none;
+  }
+  :root[data-theme="light"] .theme-sun {
+    display: block;
+  }
+
+  /* Entrance: plain CSS, so it also runs with no JavaScript. */
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+  .settle {
+    animation: settle 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+  }
+
+  html[data-nav] .settle {
+    animation: none;
+  }
+
+  /* Scroll reveals via scroll-driven animation; browsers without it simply show the content. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 4% entry 30%;
+    }
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+    }
+    /* Statement: words light up in reading order as they climb the screen. */
+    .stmt-word {
+      display: inline-block;
+      animation: stmt linear both;
+      animation-timeline: view();
+      animation-range: cover 18% cover 38%;
+    }
+    @keyframes stmt {
+      from {
+        opacity: 0.18;
+      }
+    }
+  }
+  @supports (animation-timeline: scroll()) {
+    .drift {
+      animation: drift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    @keyframes drift {
+      to {
+        transform: translateY(var(--drift, -40px));
+      }
+    }
+    /* Hero photograph: a slow push-in as the page scrolls away from it. */
+    .push {
+      animation: push linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+      transform-origin: 50% 40%;
+    }
+    @keyframes push {
+      to {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  /* Routine: the connecting line draws itself as the steps scroll into view. */
+  .ritual-line {
+    transform-origin: left;
+  }
+  @supports (animation-timeline: view()) {
+    .ritual-line {
+      animation: draw-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+    @keyframes draw-x {
+      from {
+        transform: scaleX(0);
+      }
+    }
+  }
+
+  /* Add-to-bag confirmation tick */
+  .pop {
+    animation: pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes pop {
+    from {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+  }
+
+  /* Slow shimmer across a glossy highlight, used once on the hero lip product. */
+  .gloss {
+    position: relative;
+    isolation: isolate;
+  }
+  .gloss::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgb(255 255 255 / 0.28) 50%,
+      transparent 62%
+    );
+    background-size: 250% 100%;
+    animation: gloss 6s ease-in-out infinite;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+  @keyframes gloss {
+    0%,
+    55% {
+      background-position: 130% 0;
+    }
+    100% {
+      background-position: -60% 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    animation-timeline: none !important;
+  }
+}
+
+/*
+  Page transitions (View Transitions API). Deliberately quick: the new page is on screen within a
+  third of a second. The header is a fixed layer; the hero photograph and the hero type are their
+  own layers, so the photograph dissolves in place and the type swaps with a short rise rather than
+  waiting on the page-wide fade. On a navigation the hero's first-load entrance is switched off
+  (html[data-nav]) so it does not play a second time inside the transition.
+*/
+header[data-site-header] {
+  view-transition-name: site-header;
+}
+.hero-media {
+  view-transition-name: hero-media;
+}
+.hero-copy {
+  view-transition-name: hero-copy;
+}
+html[data-nav] .hero-copy .rise {
+  animation: none;
+}
+html[data-nav] .rise {
+  animation-duration: 0.35s;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+}
+@keyframes vt-type-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-type-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+::view-transition-group(root),
+::view-transition-group(hero-media),
+::view-transition-group(hero-copy) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root) {
+  animation: vt-fade-out 0.18s ease-out both;
+}
+::view-transition-new(root) {
+  animation: vt-fade-in 0.28s ease-out both;
+}
+::view-transition-old(hero-media) {
+  animation: vt-fade-out 0.3s ease-out both;
+}
+::view-transition-new(hero-media) {
+  animation: vt-photo-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+::view-transition-old(hero-copy) {
+  animation: vt-type-out 0.14s ease-out both;
+}
+::view-transition-new(hero-copy) {
+  animation: vt-type-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.04s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
