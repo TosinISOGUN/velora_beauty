@@ -39,4 +39,4 @@ The favicon set is built from the VELORA logo: save it as `assets-source/brand/v
 
 ## Content rules
 
-No reviews, ratings, health or certification claims, and no shade-matching promise. No em or en dashes in any source file (a test enforces it). To make the site indexable, set `INDEXABLE` to `true` in `src/data/site.ts` and update `public/robots.txt`.
+No reviews, ratings, health or certification claims, and no shade-matching promise. No em or en dashes in any source file (a test enforces it). To make the site indexable, set `INDEXABLE` to `true` in `src/data/site.ts`. `public/robots.txt` deliberately allows crawling so link-preview bots (Facebook, LinkedIn, X, WhatsApp) can fetch the share image; the `noindex` meta tag is what keeps search engines out.

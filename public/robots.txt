@@ -1,3 +1,5 @@
-# VELORA BEAUTY is a fictional concept: ask crawlers not to index it.
+# VELORA BEAUTY is a fictional concept. Search engines are kept out by a noindex meta tag on every page, not by
+# a blanket Disallow here: that would also block the link-preview crawlers (Facebook, LinkedIn, X,
+# WhatsApp, Slack) from reading the page and its share image, so no thumbnail would appear.
 User-agent: *
-Disallow: /
+Allow: /
